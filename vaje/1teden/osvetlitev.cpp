@@ -1,5 +1,6 @@
 #include <utility>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -12,7 +13,7 @@ int main() {
     cin >> dolzina >> stLuci;
     int neosvetljene = dolzina;
 
-    bool* ulica = (bool*) calloc(dolzina, 1);
+    vector<bool> ulica(dolzina, 0);
     for (int i = 0; i < stLuci; i++){
         cin >> koordinataLuci >> svetlost;
 
