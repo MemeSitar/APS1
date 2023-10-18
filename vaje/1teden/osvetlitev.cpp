@@ -58,13 +58,7 @@ int main() {
             intervali.push_back(pair<int, int>(leva, desna));
         } else {
             for (auto iter = intervali.begin(); iter != intervali.end(); ++iter){
-                if (iter->first == leva){
-                    iter->second = max(iter->second, desna);
-                    break;
-                } else if (iter->second == leva) {
-                    iter->second = max(iter->second, desna);
-                    break;
-                } else if (iter->first > leva){
+                if (iter->first > leva){
                     luci.insert(iter, pair<int, int>(leva, desna));
                     break;
                 }
