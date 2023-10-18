@@ -21,7 +21,7 @@ int main(){
         seznam.push_back(tmp);
     }
     // i -> iterator z vector.begin() + i
-    for (int i = 0; i < stKorakov; i++){
+    for (int i = 0; i < stKorakov && !is_sorted(seznam.begin(), seznam.end()); i++){
         int j = 0;
         while(j < stElementov){
             int cete = 0;
