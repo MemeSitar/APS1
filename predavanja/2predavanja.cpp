@@ -50,13 +50,13 @@ void bubble_sort(vector<int> &sez) {
 vector<int> merge(vector<int> &a, vector<int> &b) {
     int i=0, j=0;
     vector<int> c;
-
+    
     while (i<a.size() || j<b.size()) {
         if (i<a.size() && j<b.size()) {
             if (a[i]<b[j]) c.push_back(a[i++]);
             else c.push_back(b[j++]);
         } else if (i<a.size()) c.push_back(a[i++]);
-        else c.push_back(b[i++]);
+        else c.push_back(b[j++]);
     }
     return c;
 }
