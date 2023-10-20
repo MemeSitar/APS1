@@ -6,7 +6,7 @@ using namespace std;
 
 void print(vector<int> &sez){
     for (int stevilka : sez){
-        cout << stevilka << endl;
+        cout << stevilka << "\n";
     }
 }
 
@@ -36,5 +36,6 @@ int main(){
         }
     }
     print(seznam);
+    cout.flush();
     return 0;
 }
