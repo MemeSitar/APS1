@@ -54,11 +54,12 @@ int main(){
     }
     
     // obrnemo stolpe in se enkrat konstruktamo (prazen) stek
-    reverse(stolpi.begin(), stolpi.end());
+    // pikico hitreje je s padajocim ijem kot pa z obracanjem celega vektorja
+    //reverse(stolpi.begin(), stolpi.end());
     stek = stack<int>();
 
     // loop iz desne strani
-    for (int i = 0; i < n; i++){
+    for (int i = n -1; i >= 0; i--){
         if(stek.empty()){
             stek.push(stolpi[i]);
         } else if (stolpi[i] <= stek.top()){
