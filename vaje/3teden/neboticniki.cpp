@@ -26,7 +26,7 @@ void stackprint(stack<int> st){
 
 int main(){
     int n, tmp;
-    int rez = 0;
+    unsigned long rez = 0;
     vector<int> stolpi;
     stack<int> stek;
     cin >> n;
@@ -58,43 +58,6 @@ int main(){
             reverse(stolpi.begin(), stolpi.end());
         }
     }
-    // loop iz leve strani
-    /*for (int i = 0; i < n; i++){
-        if(stek.empty()){
-            stek.push(stolpi[i]);
-        } else if (stolpi[i] <= stek.top()){
-            rez += stek.size();
-            stek.push(stolpi[i]);
-        } else if (stolpi[i] > stek.top()){
-            while(!stek.empty() && stolpi[i] > stek.top()){
-                stek.pop();
-            }
-            rez += stek.size();
-            stek.push(stolpi[i]);
-        }
-    }
-    
-    // obrnemo stolpe in se enkrat konstruktamo (prazen) stek
-    // pikico hitreje je s padajocim ijem kot pa z obracanjem celega vektorja
-    //reverse(stolpi.begin(), stolpi.end());
-    stek = stack<int>();
-
-    // loop iz desne strani
-    for (int i = n -1; i >= 0; i--){
-        if(stek.empty()){
-            stek.push(stolpi[i]);
-        } else if (stolpi[i] <= stek.top()){
-            rez += stek.size();
-            stek.push(stolpi[i]);
-        } else if (stolpi[i] > stek.top()){
-            while(!stek.empty() && stolpi[i] > stek.top()){
-                stek.pop();
-            }
-            rez += stek.size();
-            stek.push(stolpi[i]);
-        }
-    }*/
-
     cout << rez << endl;
     return 0;
 }
