@@ -37,8 +37,29 @@ int main(){
         stolpi.push_back(tmp);
     }
 
+
+    for (int j = 0; j < 2; j++){
+        for (int i = 0; i < n; i++){
+            if(stek.empty()){
+                stek.push(stolpi[i]);
+            } else if (stolpi[i] <= stek.top()){
+                rez += stek.size();
+                stek.push(stolpi[i]);
+            } else if (stolpi[i] > stek.top()){
+                while(!stek.empty() && stolpi[i] > stek.top()){
+                    stek.pop();
+                }
+                rez += stek.size();
+                stek.push(stolpi[i]);
+            }
+        }    
+        if (j == 0){
+            stek = stack<int>();
+            reverse(stolpi.begin(), stolpi.end());
+        }
+    }
     // loop iz leve strani
-    for (int i = 0; i < n; i++){
+    /*for (int i = 0; i < n; i++){
         if(stek.empty()){
             stek.push(stolpi[i]);
         } else if (stolpi[i] <= stek.top()){
@@ -72,7 +93,7 @@ int main(){
             rez += stek.size();
             stek.push(stolpi[i]);
         }
-    }
+    }*/
 
     cout << rez << endl;
     return 0;
