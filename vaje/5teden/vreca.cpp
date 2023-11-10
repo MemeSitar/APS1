@@ -5,10 +5,12 @@
 using namespace std;
 
 struct Voz {
-    int leva;
-    int desna;
+    // vozlisce steje vse elemente med [[lMeja, dMeja))
+    int lMeja;
+    int dMeja;
     Voz* levi;
     Voz* desni;
+    int stev;
 };
 
 void dodaj(int* arr, int x){
@@ -29,7 +31,24 @@ int poizvedba(int* arr, int a, int b){
     return rez;
 }
 
+Voz* ustvari(int a, int b){
+    Voz* voz;
+    voz->stev = 0;
+    voz->dMeja = a;
+    voz->lMeja = b;
+    if (b - a == 1){
+        voz->levi = NULL;
+        voz->desni = NULL;
+        return voz;
+    } else {
+        int sredina = b - ((b - a)/2);
+        voz->levi = ustvari(a, sredina);
+        voz->desni = ustvari(sredina , b);
+    }
+}
+
 int main() {
+    Voz* koren = ustvari(1, 1000001);
     int* arr = (int*)calloc(1000000, sizeof(int));
     int rez = 0;
     int n, s, x;
