@@ -8,6 +8,12 @@ using namespace std;
 
 #define SEGS printf("%s:%d\n", __FILE__, __LINE__);
 
+void print(vector<int> &sez){
+    for (int stevilka : sez){
+        cout << stevilka << "\n";
+    }
+}
+
 int main() {
     int n, tmp;
     int mediana = -1;
@@ -40,7 +46,9 @@ int main() {
         } else if ((int) maxHeap.size() - (int)minHeap.size() >= 0){
             mediana = maxHeap.top();
         }
-        cout << mediana << endl;
+        vec.push_back(mediana);
     }
+    print(vec);
+    cout.flush();
     return 0;
 }
