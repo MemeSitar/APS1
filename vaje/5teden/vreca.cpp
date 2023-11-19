@@ -6,29 +6,40 @@ using namespace std;
 
 
 // vozlisce steje vse elemente med [[lMeja, dMeja))
-class treeNode{
+class staticTree{
 public:
     int lMeja;
     int dMeja;
-    treeNode *levi;
-    treeNode *desni;
-    int stev;
-    treeNode(int lMeja, int dMeja){
+    staticTree *levi;
+    staticTree *desni;
+    long stev;
+
+    /* (rekurzivna) funkcija prijazno izgradi drevo sledece:
+        - vzame lMeja in dMeja, ju nastavi.
+        - ce sta enaka je to singleton, nima otrok
+        - ce sta razlicna, ustvari dva otroka L in D, kjer so njihove meje sledece:
+            (najprej poiscemo kako dolg je interval in sredino intervala)
+            length = dMeja - lMeja
+            sredina = length/2 (zaokrozeno NAVZDOL)
+            [L->lMeja = lMeja,          L->dMeja = lMeja + sredina]
+            [D->lMeja = lMeja + sredina + 1,  D->dMeja = dMeja]
+    */
+    staticTree(int lMeja, int dMeja){
         this->lMeja = lMeja;
         this->dMeja = dMeja;
         stev = 0;
-        if (dMeja - lMeja == 1){
+        if (lMeja == dMeja){
             levi = NULL;
             desni = NULL;
         } else {
-            int sredina = dMeja - ((dMeja - lMeja/2));
-            levi = &treeNode(lMeja, sredina);
-            desni = &treeNode(sredina , dMeja);
+            int sredina = (dMeja - lMeja/2);
+            levi = new staticTree(lMeja, sredina);
+            desni = new staticTree(sredina + 1, dMeja);
         }
     }
 
     void dodaj(int x){
-        if ((x >= lMeja) && (x < dMeja)){
+        if ((x >= lMeja) && (x <= dMeja)){
             stev++;
             if (levi){
                 levi->dodaj(x);
@@ -41,58 +52,45 @@ public:
     }
 
     void odstrani(int x){
-        if ((x >= lMeja) && (x < dMeja)){
+        if ((x >= lMeja) && (x <= dMeja)){
             if (stev > 0) stev--;
             if (levi){
-                levi->dodaj(x);
+                levi->odstrani(x);
             }
             if (desni){
-                desni->dodaj(x);
+                desni->odstrani(x);
             }
         }
     }
 
 
-    int poizvedba(int a, int b){
-        if ((a < lMeja) || (b >= dMeja)) return 0;
-        if ((a == lMeja && b == dMeja)){
+    long poizvedba(int a, int b){
+        // tocen match ALI vsebovanje
+        long rez = 0;
+        if ((a <= lMeja && b >= dMeja)){
             return stev;
+        } else {
+            if (levi) rez += levi->poizvedba(a, b); 
+            if (desni) rez+= desni->poizvedba(a, b);
+            return rez;
         }
 
     }
 };
 
-void dodaj(int* arr, int x){
-    arr[x]++;
-}
-
-void odstrani(int* arr, int x){
-    if (arr[x] > 0){
-        arr[x]--;
-    }
-}
-
-int poizvedba(int* arr, int a, int b){
-    int rez = 0;
-    for(int i = a; i <= b; i++){
-        rez += arr[i];
-    }
-    return rez;
-}
-
 int main() {
-    int* arr = (int*)calloc(1000000, sizeof(int));
+    staticTree drevo = staticTree(1, 1000000);
     long rez = 0;
     int n, s, x;
     cin >> n;
     for(int i = 0; i < n; i++){
         cin >> s >> x;
         if(s < 0){
-            dodaj(arr, x);
+            drevo.dodaj(x);
         } else if (s == 0){
-            odstrani(arr, x);
+            drevo.odstrani(x);
         } else {
-            rez += poizvedba(arr, min(s, x), max(s, x) + 1);
+            rez += drevo.poizvedba(min(s, x), max(s, x));
         }
     }
     cout << rez << endl;
