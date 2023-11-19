@@ -4,7 +4,7 @@
 #include <vector>
 using namespace std;
 
-
+int* arr = (int*) calloc(1000001, sizeof(int));
 // vozlisce steje vse elemente med [[lMeja, dMeja))
 class staticTree{
 public:
@@ -47,12 +47,13 @@ public:
             if (desni){
                 desni->dodaj(x);
             }
+            return;
         }
 
     }
 
     void odstrani(int x){
-        if ((x >= lMeja) && (x <= dMeja)){
+        if ((arr[x] > 0) && (x >= lMeja) && (x <= dMeja)){
             if (stev > 0) stev--;
             if (levi){
                 levi->odstrani(x);
@@ -60,6 +61,7 @@ public:
             if (desni){
                 desni->odstrani(x);
             }
+            return;
         }
     }
 
@@ -79,16 +81,24 @@ public:
 };
 
 int main() {
-    staticTree drevo = staticTree(1, 1000000);
+    staticTree drevo = staticTree(0, 1048575);
+    bool prazen = true;
     long rez = 0;
     int n, s, x;
     cin >> n;
     for(int i = 0; i < n; i++){
         cin >> s >> x;
         if(s < 0){
+            prazen = false;
             drevo.dodaj(x);
+            arr[x]++;
         } else if (s == 0){
             drevo.odstrani(x);
+            if (arr[x] > 0) arr[x]--;
+        } else if (prazen){
+
+        } else if (s - x == 0){
+            rez += arr[x];
         } else {
             rez += drevo.poizvedba(min(s, x), max(s, x));
         }
