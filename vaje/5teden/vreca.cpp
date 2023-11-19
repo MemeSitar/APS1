@@ -32,7 +32,7 @@ public:
             levi = NULL;
             desni = NULL;
         } else {
-            int sredina = (dMeja - lMeja/2);
+            int sredina = lMeja + (dMeja - lMeja)/2;
             levi = new staticTree(lMeja, sredina);
             desni = new staticTree(sredina + 1, dMeja);
         }
