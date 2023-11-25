@@ -5,7 +5,7 @@
 using namespace std;
 #define SEGS printf("%s:%d\n", __FILE__, __LINE__);
 
-int print(vector<pair<int, int>> sez){
+void print(vector<pair<int, int>> sez){
     for(pair<int, int> par : sez){
         if (par.first == -1){
             cout << par.first << "\n";
