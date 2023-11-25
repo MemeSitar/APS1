@@ -27,6 +27,7 @@ int main(){
     int stNizov;
     string vzorec, beseda;
 
+    cin >> stNizov;
     for(int i=0; i<stNizov; i++){
         cin >> vzorec >> beseda;
         rez.push_back(ujemanje(vzorec, beseda));
