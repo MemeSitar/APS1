@@ -3,6 +3,7 @@
 #include <utility>
 #include <algorithm>
 using namespace std;
+#define SEGS printf("%s:%d\n", __FILE__, __LINE__);
 
 void print(vector<int> &sez){
     for (int stev : sez){
@@ -10,6 +11,20 @@ void print(vector<int> &sez){
     }
     cout.flush();
 }
+
+class node{
+public:
+    node* arr[26] = {nullptr};
+    char c;
+    int prioriteta;
+    int index;
+
+    node(char c, int index, int prioriteta){
+        this->c = c;
+        this->prioriteta = prioriteta;
+        this->index = index;
+    }
+};
 
 /*
 V vsakem vozliscu:
@@ -21,32 +36,45 @@ Hranimo seznam vozlisc za vsako naslednjo crko; Ce poizvedba kaze na NULL vrnemo
 */
 class trie{
 public:
-    node* arr[26];
+    node* arr[26] = {nullptr};
+    node* root;
 
     trie(){
-
+        root = new node('\0', 0, 0);
     }
 
     void dodajBesedo(string beseda, int index, int prioriteta){
+        node* vozl = root;
+        int crka;
+        for(int i = 0; i < beseda.length(); i++){
+            crka = (int) beseda.at(i) - 'a';
+            // ce ne obstaja
+            if(vozl->arr[crka] == nullptr){
+                vozl->arr[crka] = new node(beseda.at(i), index, prioriteta);
+            }
 
+            vozl = vozl->arr[crka];
+
+            if (vozl->prioriteta < prioriteta){
+                vozl->prioriteta = prioriteta;
+                vozl->index = index;
+            }
+        }
     }
 
     int isciBesedo(string beseda){
-
-    }
-};
-
-class node{
-public:
-    node* arr[26] = {nullptr};
-    char c;
-    int prioriteta;
-    int index;
-
-    node(char c, int prioriteta, int index){
-        this->c = c;
-        this->prioriteta = prioriteta;
-        this->index = index;
+        node* vozl = root;
+        int crka;
+        int rez;
+        for (int i = 0; i < beseda.length(); i++){
+            crka = (int) beseda.at(i) - 'a';
+            if (vozl->arr[crka] == nullptr){
+                return 0;
+            }
+            vozl = vozl->arr[crka];
+            rez = vozl->index;
+        }
+        return rez;
     }
 };
 
@@ -56,7 +84,6 @@ int main(){
     int tmp;
     string temp;
     trie drevo = trie();
-
     cin >> stBesed;
 
     for(int i=0; i < stBesed; i++){
