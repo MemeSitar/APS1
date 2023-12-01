@@ -22,6 +22,16 @@ void izpisiSosede(vector<vector<int>> &sosedi){
     }
 }
 
+void izpisiSosedeBarve(vector<vector<int>> &sosedi, vector<int> &barve){
+    for(int i = 0; i < sosedi.size(); i++){
+        cout << i + 1 << "(" << barve[i] <<  ") -> ";
+        for(int sosed : sosedi.at(i)){
+            cout << sosed + 1 << "(" << barve[sosed] << "), ";
+        }
+        cout << endl;
+    }
+}
+
 void dodaj(vector<vector<int>> &tabelaSosedov, int a, int b){
     tabelaSosedov[a - 1].push_back(b - 1);
     tabelaSosedov[b - 1].push_back(a - 1);
@@ -38,7 +48,10 @@ int main(){
         cin >> tmp1 >> tmp2;
         dodaj(sosedi, tmp1, tmp2);
     }
-    izpisiSosede(sosedi);
+    for(int barva : barve){
+        barva = 0;
+    }
+    izpisiSosedeBarve(sosedi, barve);
 
     return 0;
 }
