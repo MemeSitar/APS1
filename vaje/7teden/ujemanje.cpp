@@ -16,8 +16,49 @@ void print(vector<pair<int, int>> sez){
     cout.flush();
 }
 
+vector<string> splitString(const string& input, char delimiter) {
+    vector<string> result;
+    size_t start = 0;
+    size_t end = input.find(delimiter);
+    string substr;
+
+    while (end != string::npos) {
+        substr = input.substr(start, end - start);
+        if (substr.length() != 0) result.push_back(substr);
+        start = end + 1;
+        end = input.find(delimiter, start);
+    }
+    substr = input.substr(start);
+    if (substr.length() != 0) result.push_back(substr);
+
+    return result;
+}
+
+pair<int, int> ujemanjeBesed(string vzorec, string beseda){
+    bool najdeno = true;
+    for(int i = 0; i<beseda.length(); i++){
+        najdeno = true;
+        for(int j = 0; j<vzorec.length(); j++){
+            if(!(beseda.at(i+j) == vzorec.at(j)) && !(vzorec.at(j) == '?')){
+                najdeno = false;
+                break;
+            }
+        }
+        if (najdeno == true){
+            return pair<int, int>(i, i+vzorec.length());
+        }
+    }
+    return pair<int, int>(-1, 0);
+}
+
 pair<int, int> ujemanje(string vzorec, string beseda){
+    vector<string> strv = splitString(vzorec, '*');
     pair<int, int> rez(0, 0);
+    int dolzina = 0;
+
+    for(string str : strv){
+        
+    }
 
     return rez;
 }
