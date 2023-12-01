@@ -12,16 +12,21 @@ void print(vector<int> sez){
     cout.flush();
 }
 
+void dodaj(vector<vector<int>> &tabelaSosedov, int a, int b){
+    tabelaSosedov[a - 1].push_back(b - 1);
+    tabelaSosedov[b - 1].push_back(a - 1);
+}
+
 int main(){
-    vector<pair<int, int>> graf;
     vector<int> rez;
     int stOtrok, stVpisov;
     int tmp1, tmp2;
-
     cin >> stOtrok, stVpisov;
+    vector<vector<int>> sosedi(stOtrok);
+    vector<int> barve(stOtrok);
     for(int i=0; i < stVpisov; i++){
         cin >> tmp1 >> tmp2;
-        graf.push_back(pair(tmp1, tmp2));
+        dodaj(sosedi, tmp1, tmp2);
     }
 
     return 0;
