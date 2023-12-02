@@ -1,7 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <utility>
-#include <algorithm>
 using namespace std;
 #define SEGS printf("%s:%d\n", __FILE__, __LINE__);
 
@@ -32,7 +30,7 @@ void izpisiSosedeBarve(vector<vector<int>> &sosedi, vector<int> &barve){
     }
 }
 
-void dodaj(vector<vector<int>> &tabelaSosedov, int a, int b){
+void inline dodaj(vector<vector<int>> &tabelaSosedov, int a, int b){
     tabelaSosedov[a - 1].push_back(b - 1);
     tabelaSosedov[b - 1].push_back(a - 1);
 }
