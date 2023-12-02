@@ -35,6 +35,24 @@ void inline dodaj(vector<vector<int>> &tabelaSosedov, int a, int b){
     tabelaSosedov[b - 1].push_back(a - 1);
 }
 
+void farbej(vector<int> &barve, vector<vector<int>> &sosedi, int trenuten, int barva){
+    int novaBarva;
+    if(barve[trenuten] == 0){
+        barve[trenuten] = barva;
+        novaBarva = (barva == 1) ? 2 : 1;
+        for(int sosed : sosedi[trenuten]){
+            if(!(barve[sosed] == novaBarva)){
+                farbej(barve, sosedi, sosed, novaBarva);
+            }
+        }
+    } else if(barve[trenuten] == barva){
+        return;
+    } else {
+        cout << -1 << endl;
+        exit(0);
+    }
+}
+
 int main(){
     int stOtrok, stVpisov;
     int tmp1, tmp2;
@@ -46,7 +64,7 @@ int main(){
         dodaj(sosedi, tmp1, tmp2);
     }
 
-    for(int i=0; i < stOtrok; i++){
+    /*for(int i=0; i < stOtrok; i++){
         if(barve[i] == 0 || barve[i] == 1){
             barve[i] = 1;
             for(int otrok : sosedi[i]){
@@ -68,6 +86,11 @@ int main(){
             }
         }
 
+    }*/
+    for(int i=0; i < stOtrok; i++){
+        if(barve[i] == 0){
+            farbej(barve, sosedi, i, 1);
+        }
     }
     //izpisiSosedeBarve(sosedi, barve);
 
