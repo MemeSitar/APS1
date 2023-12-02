@@ -38,7 +38,6 @@ void dodaj(vector<vector<int>> &tabelaSosedov, int a, int b){
 }
 
 int main(){
-    vector<int> rez;
     int stOtrok, stVpisov;
     int tmp1, tmp2;
     cin >> stOtrok >> stVpisov;
@@ -48,10 +47,32 @@ int main(){
         cin >> tmp1 >> tmp2;
         dodaj(sosedi, tmp1, tmp2);
     }
-    for(int barva : barve){
-        barva = 0;
-    }
-    izpisiSosedeBarve(sosedi, barve);
 
+    for(int i=0; i < stOtrok; i++){
+        if(barve[i] == 0 || barve[i] == 1){
+            barve[i] = 1;
+            for(int otrok : sosedi[i]){
+                if(barve[otrok] == 0){
+                    barve[otrok] = 2;
+                } else if (barve[otrok] == 1){
+                    cout << "-1" << endl;
+                    exit(0);
+                }
+            }
+        } else if(barve[i] == 2){
+            for(int otrok : sosedi[i]){
+                if(barve[otrok] == 0){
+                    barve[otrok] = 1;
+                } else if (barve[otrok] == 2){
+                    cout << "-1" << endl;
+                    exit(0);
+                }
+            }
+        }
+
+    }
+    //izpisiSosedeBarve(sosedi, barve);
+
+    print(barve);
     return 0;
 }
