@@ -36,13 +36,16 @@ void inline dodaj(vector<vector<int>> &tabelaSosedov, int a, int b){
 }
 
 void farbej(vector<int> &barve, vector<vector<int>> &sosedi, int trenuten, int barva){
-    int novaBarva;
+    SEGS
     if(barve[trenuten] == 0){
         barve[trenuten] = barva;
-        novaBarva = (barva == 1) ? 2 : 1;
+        SEGS
         for(int sosed : sosedi[trenuten]){
-            if(!(barve[sosed] == novaBarva)){
-                farbej(barve, sosedi, sosed, novaBarva);
+            if(!(barve[sosed] ==((barva == 1) ? 2 : 1))){
+                SEGS
+                cout << sosed << "\n";
+                SEGS
+                farbej(barve, sosedi, sosed, ((barva == 1) ? 2 : 1));
             }
         }
     } else if(barve[trenuten] == barva){
