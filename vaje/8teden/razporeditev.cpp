@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-#define SEGS printf("%s:%d\n", __FILE__, __LINE__);
 
 void print(vector<int> sez){
     for(int stev : sez){
@@ -36,16 +35,11 @@ void inline dodaj(vector<vector<int>> &tabelaSosedov, int a, int b){
 }
 
 void farbej(vector<int> &barve, vector<vector<int>> &sosedi, int trenuten, int barva){
-    SEGS
     if(barve[trenuten] == 0){
         barve[trenuten] = barva;
-        SEGS
-        for(int sosed : sosedi[trenuten]){
-            if(!(barve[sosed] ==((barva == 1) ? 2 : 1))){
-                SEGS
-                cout << sosed << "\n";
-                SEGS
-                farbej(barve, sosedi, sosed, ((barva == 1) ? 2 : 1));
+        for(int i=0; i < sosedi[trenuten].size(); i++){
+            if(!(barve[sosedi[trenuten][i]] ==((barva == 1) ? 2 : 1))){
+                farbej(barve, sosedi, sosedi[trenuten][i], ((barva == 1) ? 2 : 1));
             }
         }
     } else if(barve[trenuten] == barva){
