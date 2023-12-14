@@ -38,8 +38,6 @@ int main(){
             naj = (tmp > naj) ? tmp : naj;
         }
     }
-    // seznam za izpis
-    vector<int> sez(naj + 1);
     // seznam za predstavitev s koordinatami
     vector<vector<pair<int, int>>> koordinate(naj + 1);
     for(int i=0; i<v; i++){
@@ -49,17 +47,19 @@ int main(){
         }
     }
 
+    // seznam za izpis
+    vector<int> sez(naj + 1);
     // barve sele tukaj postanejo vazne
     vector<vector<int>> barve(v, vector<int>(s));
 
     // spuscamo gladino vode (i) + se sprehodimo cez vse ki smo odkrili (koordinate[i])
     int stevecBarv = 1;
-    int rez;
     for(int i=naj; i>0; i--){
+        int stOtokov = 0;
         // za vse na tem nivoju preverimo, ce imajo sosede ki so ze pobarvani
         // ce ne, jih pobarvamo z novo barvo.
         for(pair<int, int> koord : koordinate[i]){
-            rez = preveriSosede(barve, koord.first, koord.second);
+            int rez = preveriSosede(barve, koord.first, koord.second);
             if(rez == -1){
                 barve[koord.first][koord.second] = stevecBarv;
                 stevecBarv++;
@@ -67,8 +67,11 @@ int main(){
                 barve[koord.first][koord.second] = rez;
             }
         }
+        // tukaj prestejemo otoke??
+        
         //izpisiOtok(barve, v, s);
         //cout << "-------------\n";
+        sez[i] = stOtokov;
     }
 
     // konec
