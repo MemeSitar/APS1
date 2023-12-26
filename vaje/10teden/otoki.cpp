@@ -1,7 +1,36 @@
 #include <iostream>
 #include <vector>
+#include <utility>
 using namespace std;
 #define SEGS printf("%s:%d\n", __FILE__, __LINE__);
+
+class DisjointSet {  // Union-Find
+public:
+    vector<int> parent, size;
+    DisjointSet(int n) {
+        parent = vector<int>(n);
+        size = vector<int>(n);
+        for (int i=0;i<n;i++) {  // individual sets
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+    
+    int root(int x) {  // find
+        if (parent[x]==x) return x;  // reached the root        
+        int r = root(parent[x]);
+        parent[x] = r;  // path compression
+        return r;
+    }
+
+    void join(int x, int y) {  // union by size
+        x=root(x); y=root(y);  // replace by roots
+        if (x==y) return;
+        if (size[x]>size[y]) swap(x,y);  // make x smaller
+        parent[x] = y;  // attach to larger root
+        size[y] += size[x];
+    }
+};
 
 void izpisiOtok(vector<vector<int>> &map, int v, int s){
     for(int i=0; i<v; i++){
@@ -20,8 +49,32 @@ void vecprint(vector<int> &sez){
 }
 
 int preveriSosede(vector<vector<int>> &barve, int i, int j){
+    // vrni najmanjsega nenicelnega soseda. (nekako pobarvaj ostale?)
     // tukaj bo treba narediti bounds checking!!
+    int mejaX = barve.size();
+    int mejaY = barve[0].size();
+    int rez = 1e9;
 
+    if(i - 1 >= 0){
+        if(barve[i][j] > 0){
+            rez = (barve[i][j] < rez) ? barve[i][j] : rez;
+        }
+    }
+    if(j - 1 >= 0){
+        if(barve[i][j] > 0){
+            rez = (barve[i][j] < rez) ? barve[i][j] : rez;
+        }
+    }
+    if(j + 1 < mejaX){
+        if(barve[i][j] > 0){
+            rez = (barve[i][j] < rez) ? barve[i][j] : rez;
+        }
+    }
+    if(i + 1 < mejaY){
+        if(barve[i][j] > 0){
+            rez = (barve[i][j] < rez) ? barve[i][j] : rez;
+        }
+    }
     return -1;
 }
 
@@ -43,7 +96,7 @@ int main(){
     for(int i=0; i<v; i++){
         for(int j=0; j<s; j++){
             // v zunanji vektor ki hrani za visino map[i][j] dodamo urejen par(i, j)
-            koordinate[map[i][j]].push_back(pair(i, j));
+            koordinate[map[i][j]].push_back({i, j});
         }
     }
 
