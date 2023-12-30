@@ -32,6 +32,37 @@ public:
     }
 };
 
+class DisjointSet2 {  // Union-Find
+public:
+    vector<vector<int>> size;
+    vector<vector<pair<int, int>>> parent;
+
+    DisjointSet2(int x, int y) {
+        parent = vector<vector<pair<int, int>>>(x, vector<pair<int, int>>(y, pair<int, int>(0, 0)));    
+        size = vector<vector<int>>(x, vector<int>(y, 1));
+        for (int i=0;i<x;i++) {
+            for (int j=0;j<y;j++){
+                parent[i][j] = {i, j}; // we do not need to set the size, it's already default 1.
+            }
+        }
+    }
+    
+    pair<int, int> root(pair<int, int> k) {  // find
+        if (parent[k.first][k.second] == pair<int, int>(k.first, k.second)) return parent[k.first][k.second];  // reached the root        
+        pair<int, int> r = root(parent[k.first][k.second]);
+        parent[k.first][k.second] = r;  // path compression
+        return r;
+    }
+
+    void join(pair<int, int> x, pair<int, int> y) {  // union by size
+        x=root(x); y=root(y);  // replace by roots
+        if (x==y) return;
+        if (size[x.first][x.second]>size[y.first][y.second]) swap(x,y);  // make x smaller
+        parent[x.first][x.second] = y;  // attach to larger root
+        size[y.first][y.second] += size[x.first][x.second];
+    }
+};
+
 void izpisiOtok(vector<vector<int>> &map, int v, int s){
     for(int i=0; i<v; i++){
         for(int j=0; j<s; j++){
