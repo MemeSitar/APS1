@@ -26,12 +26,13 @@ public:
         return r;
     }
 
-    void join(pair<int, int> x, pair<int, int> y) {  // union by size
+    int join(pair<int, int> x, pair<int, int> y) {  // union by size
         x=root(x); y=root(y);  // replace by roots
-        if (x==y) return;
+        if (x==y) return 0;
         if (size[x.first][x.second]>size[y.first][y.second]) swap(x,y);  // make x smaller
         parent[x.first][x.second] = y;  // attach to larger root
         size[y.first][y.second] += size[x.first][x.second];
+        return -1;
     }
 };
 
@@ -45,40 +46,11 @@ void izpisiOtok(vector<vector<int>> &map, int v, int s){
 }
 
 void vecprint(vector<int> &sez){
+    int i = 0;
     for (int stevilka : sez){
         cout << stevilka << "\n";
     }
     cout.flush();
-}
-
-int preveriSosede(vector<vector<int>> &barve, int i, int j){
-    // vrni najmanjsega nenicelnega soseda. (nekako pobarvaj ostale?)
-    // tukaj bo treba narediti bounds checking!!
-    int mejaX = barve.size();
-    int mejaY = barve[0].size();
-    int rez = 1e9;
-
-    if(i - 1 >= 0){
-        if(barve[i][j] > 0){
-            rez = (barve[i][j] < rez) ? barve[i][j] : rez;
-        }
-    }
-    if(j - 1 >= 0){
-        if(barve[i][j] > 0){
-            rez = (barve[i][j] < rez) ? barve[i][j] : rez;
-        }
-    }
-    if(j + 1 < mejaX){
-        if(barve[i][j] > 0){
-            rez = (barve[i][j] < rez) ? barve[i][j] : rez;
-        }
-    }
-    if(i + 1 < mejaY){
-        if(barve[i][j] > 0){
-            rez = (barve[i][j] < rez) ? barve[i][j] : rez;
-        }
-    }
-    return -1;
 }
 
 int main(){
@@ -103,31 +75,31 @@ int main(){
         }
     }
 
+    DisjointSet2 set(v, s);
+
     // seznam za izpis
     vector<int> sez(naj + 1);
-    // barve sele tukaj postanejo vazne
-    vector<vector<int>> barve(v, vector<int>(s));
 
     // spuscamo gladino vode (i) + se sprehodimo cez vse ki smo odkrili (koordinate[i])
-    int stevecBarv = 1;
+
+    int stOtokov = 0;
     for(int i=naj; i>0; i--){
-        int stOtokov = 0;
-        // za vse na tem nivoju preverimo, ce imajo sosede ki so ze pobarvani
-        // ce ne, jih pobarvamo z novo barvo.
-        for(pair<int, int> koord : koordinate[i]){
-            int rez = preveriSosede(barve, koord.first, koord.second);
-            if(rez == -1){
-                barve[koord.first][koord.second] = stevecBarv;
-                stevecBarv++;
-            } else {
-                barve[koord.first][koord.second] = rez;
+        for(auto koord : koordinate[i]){
+            stOtokov++;
+            if(koord.first + 1 < v && map[koord.first + 1][koord.second] >= i){
+                stOtokov += set.join(koord, {koord.first + 1, koord.second});
+            }
+            if(koord.first - 1 >= 0 && map[koord.first - 1][koord.second] >= i){
+                stOtokov += set.join(koord, {koord.first - 1, koord.second});
+            }
+            if(koord.second + 1 < s && map[koord.first][koord.second + 1] >= i){
+                stOtokov += set.join(koord, {koord.first, koord.second + 1});
+            }
+            if(koord.second - 1 >= 0 && map[koord.first][koord.second - 1] >= i){
+                stOtokov += set.join(koord, {koord.first, koord.second - 1});
             }
         }
-        // tukaj prestejemo otoke??
-        
-        //izpisiOtok(barve, v, s);
-        //cout << "-------------\n";
-        sez[i] = stOtokov;
+        sez[i - 1] = stOtokov;
     }
 
     // konec
